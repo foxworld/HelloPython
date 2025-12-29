@@ -82,3 +82,45 @@ c = .7
 d = 12.7
 print(type(a), type(b), type(c), type(d))
 
+# 형 변환
+print(float(b))
+print(int(d))
+print(int(c))
+print(int(True)) # True = 1, False = 0
+print(float(False)) # True = 1.0, False = 0.0
+print(complex(a))
+print(complex(b))
+print(complex('3')) # 문자열 -> 숫자형
+print(complex(False)) # True = 1+0j, False = 0+0j
+print()
+
+# 수치 연산 함수
+print(abs(-7))
+x, y = divmod(100, 8)
+print(x, y)  # 100을 8로 나눈 몫과 나머지
+print(pow(5, 3), 5 ** 3, 5*5*5)  # 5의 3제곱
+print()
+
+
+# 외부 모듈
+import math
+print(math.ceil(5.1))  # 올림
+print(math.floor(5.9)) # 내림
+print(math.pi)         # 원주율
+print()
+
+# 퀴즈
+# 반지름이 5인 원의 넓이를 구하세요 (원 넓이 = 3.14 * 반지름 * 반지름)
+radius = 5
+area = math.pi * radius * radius
+print("반지름이", radius, "인 원의 넓이 :", area)
+# 반지름이 10인 원의 넓이를 구하세요
+radius = 10
+area = math.pi * radius * radius
+print("반지름이", radius, "인 원의 넓이 :", area)
+# 반지름이 15.5인 원의 넓이를 구하세요
+radius = 15.5
+area = math.pi * radius * radius
+print("반지름이", radius, "인 원의 넓이 :", area)
+
+
