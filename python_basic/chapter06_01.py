@@ -115,7 +115,7 @@ class Dog: # object 상속
 
 # 인스턴스 ㅅ ㅐㅇ성
 c = Dog('july', 4)
-d = Dog('marry', 4)
+d = Dog('merry', 4)
 # 메소드 호출
 print(c.info())
 print(c.speak('hello'))
