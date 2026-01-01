@@ -18,15 +18,12 @@ def divide(x, y):
 def power(x, y):
     return x**y
 
-# __name__ 사용
-if __name__ == '__main__':
-    print('-' * 15)
-    print('called! main!')
-    print(add(5,5))
-    print(subtract(15,5))
-    print(multiply(10,10))
-    print(divide(5,3))
-    print(power(10,2))
-    print('-' * 15)
 
-
+print('-' * 15)
+print('called! inner!')
+print(add(5,5))
+print(subtract(15,5))
+print(multiply(10,10))
+print(divide(5,3))
+print(power(10,2))
+print('-' * 15)
