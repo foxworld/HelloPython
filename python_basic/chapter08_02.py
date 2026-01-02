@@ -39,3 +39,48 @@ print(os.environ["PYTHONUSERBASE"])
 
 # 예제7
 print(os.getcwd())
+
+# 예제8
+# time : 시간 관련 처리
+import time
+
+print(time.time())
+
+# 예제9
+print(time.localtime(time.time()))
+
+#예제10
+print(time.ctime())
+
+#예제11(형식표현)
+print(time.strftime('%Y-%m-%d %H:%M:%S'), time.localtime(time.time()))
+
+# 예제12(시간간격발생)
+# for i in range(5):
+#     print(i)
+#     time.sleep(1) # 초
+
+
+# random : 난수 발생
+import random
+
+# 예제13
+print(random.random()) # 0 ~ 1 실수
+
+# 예제14
+print(random.randint(1,45))
+print(random.randrange(1,45))
+
+# 예제15(섞기)
+d = [1,2,3,4,5]
+random.shuffle(d)
+print(d)
+
+# 예제16(무작위 선택)
+c = random.choice(d)
+print(c)
+
+# webbrowser : 본인 os의 웹 브라우저 실행
+import webbrowser
+#webbrowser.open('https://naver.com')
+webbrowser.open_new('https://naver.com')
