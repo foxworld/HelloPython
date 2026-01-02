@@ -91,8 +91,3 @@ while turns > 0:
             winsound.PlaySound('./sound/bad.wav', winsound.SND_FILENAME)
             # 싶패 메시지
             print("You hangman game failed bye!")
-
-
-
-
-
