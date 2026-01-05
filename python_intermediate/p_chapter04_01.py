@@ -73,5 +73,3 @@ print(marks2)
 # 증명
 print([id(i) for i in marks1])
 print([id(i) for i in marks2])
-
-
