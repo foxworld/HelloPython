@@ -61,14 +61,11 @@ print('sorted - ', f_list)
 print('sort -', f_list.sort(), f_list)
 print('sort -', f_list.sort(reverse=True), f_list)
 print('sort -', f_list.sort(key=len), f_list)
-print('sort -', f_list.sort(key=lambda x: x[-1]), f_list)
-print('sort -', f_list.sort(key=lambda x: x[-1], reverse=True), f_list)
+print('sort -', f_list.sort(key=lambda x : x[-1]), f_list)
+print('sort -', f_list.sort(key=lambda x : x[-1], reverse=True), f_list)
 print('sort - ', f_list)
 
 # List vs Array 접합 한 사용법 설명
 # 리스트 기반 : 융통성(다양한 자료형, 범용적 사용)
 # 숫자 기반 : 배열(리스트와 거의 호환)
-
-
-
 
