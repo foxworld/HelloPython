@@ -48,3 +48,4 @@ print(new_dict2)
 # 주의
 new_dict3 = {k: v for k, v in source}
 print(new_dict3)
+
