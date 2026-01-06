@@ -59,7 +59,7 @@ print(dir(averager_cls))
 print(averager_cls(10))
 print(averager_cls(30))
 print(averager_cls(50))
-print(averager_cls(193))
+print(averager_cls(70))
 
 
 
