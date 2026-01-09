@@ -49,7 +49,7 @@ class WordSplitter:
         return word
 
     def __repr__(self):
-        return 'WordSplit(%s)' % (self._text)
+        return 'WordSplit(%s)' % self._text
 
 wi = WordSplitter('Do today what you could to tomorrow')
 print(wi)
@@ -78,7 +78,7 @@ class WordSplitGenerator:
         return
 
     def __repr__(self):
-        return 'WordSplit(%s)' % (self._text)
+        return 'WordSplit(%s)' % self._text
 
 wg = WordSplitGenerator('Do today what you could to tomorrow')
 wt = iter(wg)
