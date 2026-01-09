@@ -54,8 +54,44 @@ print(next(cr3))
 print(getgeneratorstate(cr3))
 cr3.send(100)
 print(getgeneratorstate(cr3))
-cr3.send(100)
-print(getgeneratorstate(cr3))
+#cr3.send(100)
+#print(getgeneratorstate(cr3))
+
+print()
+print()
+
+# 코루틴 Ex3
+# StopIteration 자동 (3.5 -> await)
+# 중첩 코루틴  처리
+
+def generator1():
+    for x in 'AB':
+        yield x
+
+    for y in range(1,4):
+        yield y
+
+t1 = generator1()
+print(next(t1))
+print(next(t1))
+print(next(t1))
+print(next(t1))
+print(next(t1))
+#print(next(t1))
+
+t2 = generator1()
+print(list(t2))
+
+def generator2():
+    yield from 'AB'
+    yield from range(1,4)
+
+t3 = generator2()
+print(next(t3))
+print(next(t3))
+print(next(t3))
+print(next(t3))
+print(next(t3))
 
 print()
 print()
