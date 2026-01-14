@@ -1,4 +1,6 @@
 from bs4 import BeautifulSoup
+# playwright installpip
+# pip install lxml
 from playwright.sync_api import sync_playwright
 import time
 
