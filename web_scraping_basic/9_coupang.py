@@ -6,8 +6,8 @@ import time
 import random
 import pandas as pd
 
-# url = "https://www.coupang.com/np/search?component=&q=%EC%95%84%EC%9D%B4%ED%8F%B0&traceId=mkeqe7zd&channel=user"
-url ="http://localhost:63342/HelloPython/web_scraping_basic/coupang.html"
+url = "https://www.coupang.com/np/search?component=&q=%EC%95%84%EC%9D%B4%ED%8F%B0&traceId=mkeqe7zd&channel=user"
+# url ="http://localhost:63342/HelloPython/web_scraping_basic/coupang.html"
 # url = "C:/IdeaProjects/study/HelloPython/web_scraping_basic/coupang.html"
 # headers={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"}
 # res = requests.get(url)
@@ -70,8 +70,6 @@ for item in items:
     else:
         review_count = "0"
 
-    print(ad_badge, name, price, rate, review_count)
-
     # 광고제외
     if ad_badge=="광고":
         # print("<광고상품 제외합니다>")
@@ -89,9 +87,8 @@ for item in items:
     if "Apple" in name:
         # print("<Apple 제품 제외합니다>")
         continue
-
+    print(ad_badge, name, price, rate, review_count)
     item_list.append([ad_badge, name, price, rate, review_count])
-    # print(ad_badge, name, price, rate, review_count)
 
 df = pd.DataFrame(item_list, columns=['광고','상품명','가격','평점'])
 print(df)
