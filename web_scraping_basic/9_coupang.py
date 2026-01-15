@@ -4,6 +4,7 @@ from playwright.sync_api import sync_playwright
 import re
 import time
 import random
+import pandas as pd
 
 # url = "https://www.coupang.com/np/search?component=&q=%EC%95%84%EC%9D%B4%ED%8F%B0&traceId=mkeqe7zd&channel=user"
 url ="http://localhost:63342/HelloPython/web_scraping_basic/coupang.html"
@@ -31,31 +32,26 @@ with sync_playwright() as p:
     page = context.new_page()
 
     # webdriver 탐지 우회
-    # page.add_init_script("Object.defineProperty(navigator, 'webdriver', { get: () => undefined });")
-    # time.sleep(random.uniform(1.5, 3.0))
+    page.add_init_script("Object.defineProperty(navigator, 'webdriver', { get: () => undefined });")
+    time.sleep(random.uniform(1.5, 3.0))
     page.goto(url)
     page.wait_for_selector("img", timeout=60000)
 
     # 사람처럼 스크롤
-    # human_scroll(page)
+    human_scroll(page)
 
     html = page.content()
-    # print(html[:1000])
     browser.close()
-soup = BeautifulSoup(html, "lxml")
-# print(soup)
 
-# items = soup.find_all("li", attrs={"class":re.compile("ProductUnit_productUnit__Qd6sv")})
+soup = BeautifulSoup(html, "lxml")
 items = soup.find_all("li", attrs={"class":re.compile("ProductUnit_productUnit*")})
-# print(items)
+
 item_list=[]
 for item in items:
     # 광고 제품은 제외
     ad_badge = item.find("div", attrs={"class":re.compile("AdMark*")})
     if ad_badge:
         ad_badge="광고"
-        # print("<광고상품 제외합니다>")
-        # continue
     else:
         ad_badge=""
 
@@ -65,23 +61,37 @@ for item in items:
     rate = item.find("div", attrs={"class":re.compile("fw-inline-flex fw-gap*")})
     if rate:
         rate = item.find("div", attrs={"class":re.compile("fw-inline-flex fw-gap*")})['aria-label'].strip()
+        print(type(rate))
     else:
         rate = "평점없음"
     review_tag = item.find("span", attrs={"class":re.compile("fw-inline-block fw-translate-y*")})
     if review_tag:
         review_count = re.compile(r'\d+').findall(review_tag.get_text(strip=True))
     else:
-        review_count = 0
+        review_count = "0"
 
-    # 광고제외
-    if ad_badge=="광고": continue
-    # 리뷰 100개 이상, 평점 4,5되는 것만 조회
-    if rate=="평점없음": continue
-    elif float(rate) < 4.5: continue
-    if float(review_count) <= 100: continue
-
-    item_list.append([ad_badge, name, price, rate, review_count])
     print(ad_badge, name, price, rate, review_count)
 
-# df = pd.DataFrame(item_list, columns=['광고','상품명','가격','평점'])
-# print(df)
+    # 광고제외
+    if ad_badge=="광고":
+        # print("<광고상품 제외합니다>")
+        continue
+    # 리뷰 100개 이상, 평점 4,5되는 것만 조회
+    if rate=="평점없음":
+        # print("<평점없음 제외합니다>")
+        continue
+    elif float(rate) < 4.5:
+        # print("<평점 4.5미만 제외합니다>")
+        continue
+    if float(review_count) <= 100:
+        # print("<리뷰 100건이하 제외합니다>")
+        continue
+    if "Apple" in name:
+        # print("<Apple 제품 제외합니다>")
+        continue
+
+    item_list.append([ad_badge, name, price, rate, review_count])
+    # print(ad_badge, name, price, rate, review_count)
+
+df = pd.DataFrame(item_list, columns=['광고','상품명','가격','평점'])
+print(df)
