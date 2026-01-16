@@ -3,8 +3,11 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
-browser = webdriver.Chrome()
+browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
 # 1. 네이버 이동
 browser.get("https://naver.com")
 # 2. 로그인 버튼 클릭
@@ -16,7 +19,7 @@ browser.find_element(By.ID, "id").send_keys("userid")
 browser.find_element(By.ID, "pw").send_keys("password")
 
 # 4. 로그인 버튼 클릭
-browser.find_element(By.ID, "log.login").click()
+# browser.find_element(By.ID, "log.login").click()
 
 time.sleep(3)
 # 5. 새로입력
