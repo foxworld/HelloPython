@@ -10,7 +10,10 @@ res = requests.get(url, headers=headers)
 res.raise_for_status()
 soup = BeautifulSoup(res.text, 'lxml')
 
+# jscontroller="jZ2Ncd"
 books = soup.find_all("div", attrs={"class": "VfPpkd-EScbFb-JIbuQc UVEnyf"})
+#books = soup.find_all("div", attrs={"jsdata":"QbiEs;YogBCj8KJAogcHJvbW90aW9uXzEwMDEwNjVfdG9wcGFpZF9ib29ra3IQAxIXChN0b3BfZGV2aWNlX2ZlYXR1cmVkEANKQAo-CBQQ3durygwQrNH_kw0Q86mDpQUQ_PzFlQQQ0-rEgg4Q-9ev1A8Qtar45QsQg5vg9QQQ8bLbxAkQ7JCSxAZQFPgBAA;$848"})
+
 print(len(books))
 for book in books:
     # print(f'book: {book}')
