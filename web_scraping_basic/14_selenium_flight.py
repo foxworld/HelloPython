@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
 browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -44,6 +46,14 @@ if len(es) > 0:
     print(es[1].text, es[1].tag_name, es[1].get_attribute("innerHTML"))
     es[1].click()
 time.sleep(10)
+
+# element 과 나올때 까지 기다리기 최대 10초까지
+try:
+    elem = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "'img[alt='제주']'")))
+    # 성공
+    print("성공:", elem.text)
+finally:
+    browser.quit()
 
 elems = browser.find_elements(By.CSS_SELECTOR, "img[alt='제주']")
 if len(elems) > 0:
