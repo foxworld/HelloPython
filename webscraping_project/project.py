@@ -47,7 +47,7 @@ def get_today_weather():
 
     soup = BeautifulSoup(browser.page_source, "lxml")
 
-    with open("weather.html", "w", encoding="utf8") as f:
+    with open("../web_scraping_basic/files/weather.html", "w", encoding="utf8") as f:
         f.write(soup.prettify())
 
     weather = soup.find("div", attrs={"class":"card card_detail _cnBlockTemplate"})

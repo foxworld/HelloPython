@@ -27,7 +27,7 @@ for year in range(2018, 2020):
             image_res = requests.get(image_url)
             image_res.raise_for_status()
 
-            with open("movie_{}_{}.jpg".format(year, idx+1), "wb") as f:
+            with open("files/movie_{}_{}.jpg".format(year, idx+1), "wb") as f:
                 f.write(image_res.content)
 
             if idx >=4: break

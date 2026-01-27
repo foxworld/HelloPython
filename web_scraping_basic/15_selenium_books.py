@@ -26,5 +26,5 @@ for book in books:
 
     print(f"Title: {title} | Price: {price} | Original Price: {org_price}")
 
-with open("books.html", "w", encoding="utf8") as f:
+with open("files/books.html", "w", encoding="utf8") as f:
     f.write(str(soup.prettify())) # html 문서 예쁘게 출력

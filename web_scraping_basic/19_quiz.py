@@ -6,7 +6,7 @@ res = requests.get(url)
 res.raise_for_status()
 
 soup = BeautifulSoup(res.text, "lxml")
-with open("quiz.html", "w", encoding="utf8") as f:
+with open("files/quiz.html", "w", encoding="utf8") as f:
     f.write(soup.prettify())
 
 data_rows = soup.find("table", attrs={"class": "list"}).find("tbody").find_all("tr", attrs={"class": "_land_tr_row"})
