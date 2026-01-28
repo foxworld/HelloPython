@@ -130,7 +130,7 @@ def get_it_news():
     soup = create_soup(url)
     # soup = create_selenium_soup(url)
 
-    with open("../webscraping_project/files/weather.html", "w", encoding="utf8") as f:
+    with open("files/weather.html", "w", encoding="utf8") as f:
         f.write(soup.prettify())
 
     # news_list = soup.find("ul", attrs={"id":re.compile(r"_SECTION_HEADLINE_LIST_")}).find_all("div", attrs={"class":"sa_text"}, limit=3)
