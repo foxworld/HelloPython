@@ -42,7 +42,7 @@ def create_selenium_soup(url):
 # 초미세먼지 00㎕/㎥ 좋음
 # 오전 강수확율 00% / 오후 강수확률 00%
 def get_weather():
-    url = "https://search.naver.com/search.naver?where=nexearch&sm=top_sly.hst&fbm=0&acr=1&ie=utf8&query=%EB%82%A0%EC%94%A8%EC%98%88%EB%B3%B4&ackey=mno9gc18"
+    url = "https://search.naver.com/search.naver?ie=utf8&query=%EB%82%A0%EC%94%A8%EC%98%88%EB%B3%B4"
     soup = create_soup(url)
     with open("files/weather.html", "w", encoding="utf8") as f:
         f.write(soup.prettify())
@@ -52,9 +52,11 @@ def get_weather():
     today_temperature = weather.find("div", attrs={"class":"temperature_text"} ).get_text().replace("현재 온도","")
     temperature_updown = weather.find("span", attrs={"class":"temperature"} )
     blind = weather.find("span", attrs={"class":"blind"})
-    print("find", weather.find("li", attrs={"class":"item_today level1"} ))
-    fine_dust = weather.find("li", attrs={"class":"item_today level1"} ).find("span", attrs={"class":"txt"} )
-    ultrafine_dust = weather.find("li", attrs={"class":"item_today level2"} ).find("span", attrs={"class":"txt"} )
+    print(weather)
+    # fine_dust = weather.find("li", attrs={"class":"item_today level2"} ).find("span", attrs={"class":"txt"} )
+    fine_dust = weather.find("ul", attrs={"class":"today_chart_list"} ).find_all("span", attrs={"class":"txt"} )[0]
+    # ultrafine_dust = weather.find("li", attrs={"class":"item_today level2"} ).find("span", attrs={"class":"txt"} )
+    ultrafine_dust = weather.find("ul", attrs={"class":"today_chart_list"} ).find_all("span", attrs={"class":"txt"} )[1]
 
     today_weather = soup.find("li", attrs={"class":"week_item today"})
     lowest = today_weather.find("span", attrs={"class":"lowest"})
