@@ -15,9 +15,6 @@ def convert_date(date_str: str) -> str:
     return dt.strftime("%Y-%m-%d")
 
 def insert_exchange_rate(data):
-    # H2 JDBC 드라이버 경로
-    print(os.path.exists("/IdeaProjects/study/HelloPython/libs/h2-2.3.232.jar"))
-
     h2_jar = "C:/IdeaProjects/study/HelloPython/libs/h2-2.3.232.jar"
     conn = jaydebeapi.connect(
         "org.h2.Driver",
