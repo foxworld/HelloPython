@@ -1,6 +1,8 @@
+import jaydebeapi
+import socket
+
 print("hello, world!")
 
-import socket
 s = socket.socket()
 try:
     s.connect(("localhost", 9092))
@@ -8,8 +10,6 @@ try:
 except Exception as e:
     print("9092 포트 연결 실패:", e)
 s.close()
-
-import jaydebeapi
 
 H2_JAR = "C:/tools/h2-2.3.232/bin/h2-2.3.232.jar"
 DB_PATH = "C:/tools/test"   # test.mv.db → test 만!
@@ -32,3 +32,4 @@ try:
 
 except Exception as e:
     print("연결 실패:", e)
+
