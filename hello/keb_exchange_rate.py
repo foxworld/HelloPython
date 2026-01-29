@@ -56,7 +56,8 @@ def create_selenium_soup(url):
     return soup
 
 def get_exchange_rate(target_date):
-    url = f"https://www.kebhana.com/cms/rate/wpfxd651_01i_01.do?ajax=true&curCd=USD&tmpInqStrDt={convert_date(target_date)}&inqStrDt={target_date}&pbldDvCd=1&inqKindCd=1&requestTarget=searchContentDiv"
+    # url = f"https://www.kebhana.com/cms/rate/wpfxd651_01i_01.do?ajax=true&curCd=USD&tmpInqStrDt={convert_date(target_date)}&inqStrDt={target_date}&pbldDvCd=1&inqKindCd=1&requestTarget=searchContentDiv"
+    url = f"https://www.kebhana.com/cms/rate/wpfxd651_01i_01.do?curCd=USD&pbldDvCd=1&inqKindCd=1&inqStrDt={target_date}"
     soup = create_soup(url)
     # print(soup.prettify())
 
@@ -86,8 +87,10 @@ def get_exchange_rate(target_date):
         print(data)
 
         pgusd01_data = [target_date, data['외화수표 파실 때'].replace(',','')]
-        insert_exchange_rate((pgusd01_data))
+        # insert_exchange_rate((pgusd01_data))
 
 if __name__ == "__main__":
+    target_date = '20260128'
+    get_exchange_rate(target_date)
     target_date = '20260129'
     get_exchange_rate(target_date)
