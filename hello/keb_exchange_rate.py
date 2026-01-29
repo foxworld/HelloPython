@@ -90,7 +90,5 @@ def get_exchange_rate(target_date):
         # insert_exchange_rate((pgusd01_data))
 
 if __name__ == "__main__":
-    target_date = '20260128'
-    get_exchange_rate(target_date)
-    target_date = '20260129'
-    get_exchange_rate(target_date)
+    today = datetime.today().strftime('%Y%m%d')
+    get_exchange_rate(today)
