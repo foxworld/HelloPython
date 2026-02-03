@@ -1,7 +1,5 @@
 import os
 import time
-from idlelib.replace import replace
-
 import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
