@@ -71,6 +71,7 @@ def create_selenium_soup(url):
 def get_exchange_rate(target_date):
     # url = f"https://www.kebhana.com/cms/rate/wpfxd651_01i_01.do?ajax=true&curCd=USD&tmpInqStrDt={convert_date(target_date)}&inqStrDt={target_date}&pbldDvCd=1&inqKindCd=1&requestTarget=searchContentDiv"
     url = f"https://www.kebhana.com/cms/rate/wpfxd651_01i_01.do?curCd=USD&pbldDvCd=1&inqKindCd=1&inqStrDt={target_date}"
+    print("url:", url)
     soup = create_soup(url)
     # print(soup.prettify())
 
@@ -79,7 +80,7 @@ def get_exchange_rate(target_date):
 
     base_date = soup.select_one("p.txtRateBox").find("strong").get_text(strip=True)
     replace_word = base_date.replace("년", "").replace("월", "").replace("일", "").strip()
-    print("기준일자:", base_date, "날짜만:", replace_word)
+    print(f"조회일자: {target_date} 기준일자: {base_date}({replace_word})")
 
     if target_date != replace_word:
         print("해당 일자의 환율 정보가 없습니다.")
@@ -107,8 +108,8 @@ def get_exchange_rate(target_date):
         }
         print(data)
 
-        pgusd01_data = [target_date, data['외화수표 파실 때'].replace(',','')]
-        # insert_exchange_rate((pgusd01_data))
+        fx_check_data = [target_date, data['외화수표 파실 때'].replace(',','')]
+        insert_exchange_rate(fx_check_data)
 
 if __name__ == "__main__":
     # get_exchange_rate("20260203")
