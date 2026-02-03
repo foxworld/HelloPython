@@ -1,5 +1,7 @@
 import os
 import time
+from idlelib.replace import replace
+
 import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -15,24 +17,35 @@ def convert_date(date_str: str) -> str:
     return dt.strftime("%Y-%m-%d")
 
 def insert_exchange_rate(data):
-    h2_jar = "C:/IdeaProjects/study/HelloPython/libs/h2-2.3.232.jar"
-    conn = jaydebeapi.connect(
-        "org.h2.Driver",
-        "jdbc:h2:tcp://localhost/~/test",
-        ["sa", ""],
-        h2_jar
-    )
-    print(conn)
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    # 프로젝트 루트(두 단계 위)
+    base_dir = os.path.abspath(os.path.join(current_dir, ".."))
+    print("base_dir:", base_dir)
+
+    h2_driver_path = f"{base_dir}/libs/h2-2.3.232.jar"
+    driver_class = "org.h2.Driver"
+    database_url = "jdbc:h2:tcp://localhost/~/test"
+    user_info = ["sa", ""]
+    conn = jaydebeapi.connect(driver_class, database_url,user_info, h2_driver_path)
+    print("conn:", conn)
 
     cursor = conn.cursor()
-    cursor.execute("SELECT 1")
-    result = cursor.fetchone()
-    print(result)
+    # delete
+    sql = "DELETE FROM PGUSD01 where tr_date = ?;"
+    cursor.execute(sql, (data[0],))
 
+    # insert
     sql = "INSERT INTO PGUSD01 (tr_date, usd_rate) values (?, ?);"
     cursor.execute(sql, data)
     conn.commit()
-    cursor.close()
+
+    # select
+    sql = "SELECT * FROM PGUSD01 where tr_date = ?;"
+    cursor.execute(sql, (data[0],))
+    rows = cursor.fetchall()
+    for row in rows:
+        print(f"tr_date: {row[0]}, usd_rate: {row[1]}")
+
     conn.close()
 
 def create_soup(url):
@@ -64,6 +77,14 @@ def get_exchange_rate(target_date):
     with open("files/exchange.html", "w", encoding="utf8") as f:
         f.write(soup.prettify())
 
+    base_date = soup.select_one("p.txtRateBox").find("strong").get_text(strip=True)
+    replace_word = base_date.replace("년", "").replace("월", "").replace("일", "").strip()
+    print("기준일자:", base_date, "날짜만:", replace_word)
+
+    if target_date != replace_word:
+        print("해당 일자의 환율 정보가 없습니다.")
+        return
+
     rows = soup.select("tbody tr")  # 모든 환율 행
     for row in rows:
         cols = [td.get_text(strip=True) for td in row.find_all("td")]
@@ -87,8 +108,11 @@ def get_exchange_rate(target_date):
         print(data)
 
         pgusd01_data = [target_date, data['외화수표 파실 때'].replace(',','')]
-        insert_exchange_rate((pgusd01_data))
+        # insert_exchange_rate((pgusd01_data))
 
 if __name__ == "__main__":
+    # get_exchange_rate("20260203")
+
     today = datetime.today().strftime('%Y%m%d')
     get_exchange_rate(today)
+
