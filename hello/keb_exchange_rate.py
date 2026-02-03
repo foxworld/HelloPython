@@ -87,7 +87,7 @@ def get_exchange_rate(target_date):
         print(data)
 
         pgusd01_data = [target_date, data['외화수표 파실 때'].replace(',','')]
-        # insert_exchange_rate((pgusd01_data))
+        insert_exchange_rate((pgusd01_data))
 
 if __name__ == "__main__":
     today = datetime.today().strftime('%Y%m%d')
