@@ -9,42 +9,59 @@ from datetime import datetime
 
 import jaydebeapi
 
+def db_connect():
+    try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        # 프로젝트 루트(한 단계 위)
+        base_dir = os.path.abspath(os.path.join(current_dir, ".."))
+        # print("base_dir:", base_dir)
+
+        h2_driver_path = f"{base_dir}/libs/h2-2.3.232.jar"
+        driver_class = "org.h2.Driver"
+        database_url = "jdbc:h2:tcp://localhost/~/test"
+        user_info = ["sa", ""]
+        conn = jaydebeapi.connect(driver_class, database_url, user_info, h2_driver_path)
+        print("conn:", conn)
+        return conn
+    except Exception as e:
+        print("DB 연결 실패:", e)
+        return None
+
+def db_disconnect(conn):
+    conn.close()
+    print("Database connection closed.")
+
 def convert_date(date_str: str) -> str:
     # "YYYYMMDD" → "YYYY-MM-DD"
     dt = datetime.strptime(date_str, "%Y%m%d")
     return dt.strftime("%Y-%m-%d")
 
-def insert_exchange_rate(data):
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    # 프로젝트 루트(두 단계 위)
-    base_dir = os.path.abspath(os.path.join(current_dir, ".."))
-    print("base_dir:", base_dir)
-
-    h2_driver_path = f"{base_dir}/libs/h2-2.3.232.jar"
-    driver_class = "org.h2.Driver"
-    database_url = "jdbc:h2:tcp://localhost/~/test"
-    user_info = ["sa", ""]
-    conn = jaydebeapi.connect(driver_class, database_url,user_info, h2_driver_path)
-    print("conn:", conn)
+def insert_first_exchange_rate(data):
+    conn = db_connect()
+    if conn is None:
+        return
 
     cursor = conn.cursor()
     # delete
+    print("### delete data for date:", data[0])
     sql = "DELETE FROM PGUSD01 where tr_date = ?;"
     cursor.execute(sql, (data[0],))
 
     # insert
+    print("### insert data:", data)
     sql = "INSERT INTO PGUSD01 (tr_date, usd_rate) values (?, ?);"
     cursor.execute(sql, data)
     conn.commit()
 
     # select
+    print("### select data for date:", data[0])
     sql = "SELECT * FROM PGUSD01 where tr_date = ?;"
     cursor.execute(sql, (data[0],))
     rows = cursor.fetchall()
     for row in rows:
         print(f"tr_date: {row[0]}, usd_rate: {row[1]}")
 
-    conn.close()
+    db_disconnect(conn)
 
 def create_soup(url):
     headers  ={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"}
@@ -107,7 +124,7 @@ def get_exchange_rate(target_date):
         print(data)
 
         fx_check_data = [target_date, data['외화수표 파실 때'].replace(',','')]
-        insert_exchange_rate(fx_check_data)
+        insert_first_exchange_rate(fx_check_data)
 
 if __name__ == "__main__":
     # get_exchange_rate("20260203")
