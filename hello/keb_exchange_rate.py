@@ -40,7 +40,7 @@ class DBConnection:
             self._conn = None
             return None
 
-    def db_disconnect(self):
+    def disconnect(self):
         try:
             if self._conn is not None:
                 self._conn.close()
@@ -106,7 +106,7 @@ def insert_first_exchange_rate(data):
         print(f"tr_date: {row[0]}, usd_rate: {row[1]}")
 
     # db_disconnect(conn)
-    db.db_disconnect()
+    db.disconnect()
 
 def create_soup(url):
     headers  ={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"}
