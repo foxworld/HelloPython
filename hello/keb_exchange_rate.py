@@ -9,27 +9,69 @@ from datetime import datetime
 
 import jaydebeapi
 
-def db_connect():
-    try:
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        # 프로젝트 루트(한 단계 위)
-        base_dir = os.path.abspath(os.path.join(current_dir, ".."))
-        # print("base_dir:", base_dir)
+class DBConnection:
+    _instance = None
+    _conn = None
 
-        h2_driver_path = f"{base_dir}/libs/h2-2.3.232.jar"
-        driver_class = "org.h2.Driver"
-        database_url = "jdbc:h2:tcp://localhost/~/test"
-        user_info = ["sa", ""]
-        conn = jaydebeapi.connect(driver_class, database_url, user_info, h2_driver_path)
-        print("conn:", conn)
-        return conn
-    except Exception as e:
-        print("DB 연결 실패:", e)
-        return None
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(DBConnection, cls).__new__(cls)
+        return cls._instance
 
-def db_disconnect(conn):
-    conn.close()
-    print("Database connection closed.")
+    def get_connection(self):
+        if self._conn is not None:
+            return self._conn
+
+        try:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            base_dir = os.path.abspath(os.path.join(current_dir, ".."))
+
+            h2_driver_path = f"{base_dir}/libs/h2-2.3.232.jar"
+            driver_class = "org.h2.Driver"
+            database_url = "jdbc:h2:tcp://localhost/~/test"
+            user_info = ["sa", ""]
+
+            self._conn = jaydebeapi.connect(driver_class, database_url, user_info, h2_driver_path)
+            print("DB 연결 성공")
+            return self._conn
+
+        except Exception as e:
+            print("DB 연결 실패:", e)
+            self._conn = None
+            return None
+
+    def db_disconnect(self):
+        try:
+            if self._conn is not None:
+                self._conn.close()
+                print("DB 연결 종료")
+                self._conn = None
+            else:
+                print("종료할 연결이 없습니다.")
+        except Exception as e:
+            print("DB 연결 종료 중 오류:", e)
+
+# def db_connect():
+#     try:
+#         current_dir = os.path.dirname(os.path.abspath(__file__))
+#         # 프로젝트 루트(한 단계 위)
+#         base_dir = os.path.abspath(os.path.join(current_dir, ".."))
+#         # print("base_dir:", base_dir)
+#
+#         h2_driver_path = f"{base_dir}/libs/h2-2.3.232.jar"
+#         driver_class = "org.h2.Driver"
+#         database_url = "jdbc:h2:tcp://localhost/~/test"
+#         user_info = ["sa", ""]
+#         conn = jaydebeapi.connect(driver_class, database_url, user_info, h2_driver_path)
+#         print("conn:", conn)
+#         return conn
+#     except Exception as e:
+#         print("DB 연결 실패:", e)
+#         return None
+#
+# def db_disconnect(conn):
+#     conn.close()
+#     print("Database connection closed.")
 
 def convert_date(date_str: str) -> str:
     # "YYYYMMDD" → "YYYY-MM-DD"
@@ -37,7 +79,9 @@ def convert_date(date_str: str) -> str:
     return dt.strftime("%Y-%m-%d")
 
 def insert_first_exchange_rate(data):
-    conn = db_connect()
+    # conn = db_connect()
+    db = DBConnection()
+    conn = db.get_connection()
     if conn is None:
         return
 
@@ -61,7 +105,8 @@ def insert_first_exchange_rate(data):
     for row in rows:
         print(f"tr_date: {row[0]}, usd_rate: {row[1]}")
 
-    db_disconnect(conn)
+    # db_disconnect(conn)
+    db.db_disconnect()
 
 def create_soup(url):
     headers  ={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"}
