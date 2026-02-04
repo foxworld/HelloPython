@@ -23,21 +23,20 @@ class DBConnection:
             return self._conn
 
         try:
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            base_dir = os.path.abspath(os.path.join(current_dir, ".."))
-
-            h2_driver_path = f"{base_dir}/libs/h2-2.3.232.jar"
+            base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+            h2_driver_path = os.path.join(base_dir, "libs", "h2-2.3.232.jar")
             driver_class = "org.h2.Driver"
-            database_url = "jdbc:h2:tcp://localhost/~/test"
+            jdbc_url = "jdbc:h2:tcp://localhost/~/test"
             user_info = ["sa", ""]
-
-            self._conn = jaydebeapi.connect(driver_class, database_url, user_info, h2_driver_path)
+            self._conn = jaydebeapi.connect(driver_class, jdbc_url, user_info, h2_driver_path)
             print("DB 연결 성공")
+
             return self._conn
 
         except Exception as e:
             print("DB 연결 실패:", e)
             self._conn = None
+
             return None
 
     def disconnect(self):
