@@ -171,8 +171,7 @@ def get_exchange_rate(target_date):
         insert_first_exchange_rate(fx_check_data)
 
 if __name__ == "__main__":
-    # get_exchange_rate("20260203")
+    get_exchange_rate("20260203")
 
     today = datetime.today().strftime('%Y%m%d')
     get_exchange_rate(today)
-
