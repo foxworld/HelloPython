@@ -1,4 +1,4 @@
-import informixdb
+import ibm_db
 import subprocess
 import datetime
 import requests
@@ -7,10 +7,19 @@ import requests
 def is_business_day():
     today = datetime.datetime.now().strftime("%Y%m%d")
 
-    conn = informixdb.connect("DBNAME@SERVER", "USER", "PASSWORD")
+    conn_str = (
+        "DATABASE=mydb;"
+        "HOSTNAME=192.168.0.10;"
+        "PORT=9088;"
+        "PROTOCOL=onsoctcp;"
+        "UID=dbuser;"
+        "PWD=dbpass;"
+    )
+    conn = ibm_db.connect(conn_str, "", "")
+    print("Connected!")
     cur = conn.cursor()
 
-    sql = "SELECT busi_sele FROM pgcal01 WHERE trd_date = ? "
+    sql = "SELECT holi_date FROM pgcal01 WHERE trd_date = ? "
     cur.execute(sql, (today,))
     row = cur.fetchone()
 
